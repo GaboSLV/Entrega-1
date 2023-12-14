@@ -1,39 +1,60 @@
 class ProductManager {
+    static ultId = 0;
     constructor(){
         this.products =[];
-        this.ids = 1;
     }
     addProduct(title, description, price, thumbnail, code, stock) {
-        const productoExistente = this.products.find((product) => product.code === code);
+        
 
-        if (productoExistente) {
-            console.log('Ya existe un producto con el mismo código');
-            return;     
+
+        if(!title || !description || !price || !thumbnail || !code || !stock) {
+
+            console.log("Por favor completa todos los campos");
+            return;
+        
         }
-        const id = this.ids;
-        this.ids++;
-        this.products.push({id, title, description, price, thumbnail, code, stock});
-
-    }
-    getProduct(){
-        return this.products; 
-    }
-    getProductById(id) {
-        const productoEncontrado = this.products.find((producto) => producto.id === id);
+        if (this.products.some(item => item.code === code)){
+            console.log ("El codigo no debe repetirse");
+            return;
     
-        if (productoEncontrado) {
-          return [productoEncontrado];
-        } 
-        else {
-            console.log("Not Found");
+
         }
+
+
+
+        const newProduct = {
+            id: ++ProductManager.ultId,
+            title,
+            description,
+            price,
+            thumbnail,
+            code,
+            stock
+        }
+
+        this.products.push(newProduct);
+     }
+     getProduct() {
+        console.log (this.products)
+     }
+     getProductById (id) {
+        const product = this.products.find (item => item.id === id);
+    if (!product){
+        console.log ("Producto no encontrado")
+
     }
-}   
-const productosActuales = new ProductManager
-productosActuales.addProduct('PC Gamer','Juega a lo que quieras', 1000, 'image', '33', 5);
-productosActuales.addProduct('PC Gamer','Juega a lo que quieras', 1000, 'image', '33', 5);
-console.log(productosActuales.getProduct())
-console.log(productosActuales.getProductById(5))
-console.log(productosActuales.getProductById(1))
+    else {
+        console.log ("Producto encontrado", product);
+    }
+    return product;
+}
+    }
 
+    const manager = new ProductManager ();
+    manager.getProduct();
+    manager.addProduct('PC Gamer','Juega a lo que quieras', 300,'image', 'abc15', 33);
+    manager.getProduct();
+    manager.addProduct('Mouse','Juega a lo que quieras', 300,'image', 'abc1225', 33);
+    manager.getProduct();
 
+manager.getProductById(2);
